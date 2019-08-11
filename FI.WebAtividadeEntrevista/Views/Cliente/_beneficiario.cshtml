@@ -1,0 +1,50 @@
+﻿<div class="modal fade" tabindex="-1" role="dialog" id="modalBeneficiario" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Beneficiários</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input hidden id="IdBeneficiario" type="text" />
+                <br />
+                <div class="row">
+                    <div class="col-sm-5">
+                        <label for="CPFBeneficiario">CPF:</label>
+                        <input class="form-control" id="CPFBeneficiario" name="CPFBeneficiario" title="CPF é obrigatório" type="text" placeholder="Ex.: 999.999.999-99" />
+                    </div>
+                    <div class="col-sm-5">
+                        <label for="NomeBeneficiario">Nome:</label>
+                        <input class="form-control" id="NomeBeneficiario" name="NomeBeneficiario" title="Nome é obrigatório" type="text" placeholder="Ex.: José da Silva" />
+                    </div>
+                    <div class="col-sm-2">
+                        <br />
+                        <button id="btnIncluir" onclick="AddBeneficiario()" style="margin-top:5px;" class="btn btn-success" type="button">
+                            Incluir
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 table-overflow">
+                        <table class="table" id="tblBeneficiarios">
+                            <thead>
+                                <tr>
+                                    <th style="width:30%;">CPF</th>
+                                    <th style="width:30%;">Nome</th>
+                                    <th style="width:40%;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="FecharModalBeneficiarios()" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
