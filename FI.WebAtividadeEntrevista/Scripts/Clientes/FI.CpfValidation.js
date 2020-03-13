@@ -53,6 +53,8 @@
     $("#Cpf").on("change", function () {
         $("#Cpf").mask("999.999.999-99");
     });
+    if (obj.Id != 0)
+        $("#botaoBeneficiarios").append('<a onclick="ModalBeneficiarios()" class="btn btn-default">Beneficiários</a>');
 
 });
 function ModalBeneficiarios() {
