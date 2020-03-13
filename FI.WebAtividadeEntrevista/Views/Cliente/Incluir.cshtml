@@ -5,9 +5,13 @@
 @section scripts{
     <script>
         var urlPost = '@Url.Action("Incluir", "Cliente", new { area = "" })';
+        var urlValidateCpf = '@Url.Action("ValidarCPf", "Cliente", new {  area = "" })';
+        var urlCheckCpf = '@Url.Action("ChecarCpf", "Cliente", new {  area = "" })';
     </script>
     @Scripts.Render("~/bundles/clientes")
-    @Scripts.Render("~/bundles/beneficiarios")
+    @Scripts.Render("~/bundles/validations")
+    @Scripts.Render("~/Scripts/jquery.maskedinput.min.js")
+    @Scripts.Render("~/Scripts/Clientes/FI.CpfValidation.js")
 }
 <h2>@Html.Raw(ViewBag.Title)</h2>
 @Html.Partial("Forms")

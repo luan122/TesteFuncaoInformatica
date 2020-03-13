@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using WebAtividadeEntrevista.Helpers;
+using FI.AtividadeEntrevista.BLL;
+using System.Web.Mvc;
 
 namespace WebAtividadeEntrevista.Models
 {
@@ -11,15 +14,8 @@ namespace WebAtividadeEntrevista.Models
     /// </summary>
     public class ClienteModel
     {
-
-        public ClienteModel()
-        {
-            Beneficiarios = new List<BeneficiarioModel>();
-            BeneficiariosUpdate = new List<BeneficiarioModel>();
-            BeneficiariosDelete = new List<BeneficiarioModel>();
-        }
         public long Id { get; set; }
-
+        
         /// <summary>
         /// CEP
         /// </summary>
@@ -74,12 +70,26 @@ namespace WebAtividadeEntrevista.Models
         /// </summary>
         public string Telefone { get; set; }
 
-        [Required]
-        public string CPF { get; set; }
+        /// <summary>
+        /// CPF
+        /// </summary>
+        [CustomValidation(typeof(ClienteModel), "CpfValidate")]
+        [CustomValidation(typeof(ClienteModel), "CpfExists")]
+        [Remote("")]
+        public string Cpf { get; set; }
 
-        public List<BeneficiarioModel> Beneficiarios { get; set; }
-        public List<BeneficiarioModel> BeneficiariosUpdate { get; set; }
-        public List<BeneficiarioModel> BeneficiariosDelete { get; set; }
-
+        public static ValidationResult CpfValidate(string Cpf, ValidationContext context)
+        {
+            if (Helper.ValidaCPF(Cpf))
+                return ValidationResult.Success;
+            return new ValidationResult("CPF Inválido");
+        }
+        public static ValidationResult CpfExists(string Cpf, ValidationContext context)
+        {
+            var boClient = new BoCliente();
+            if (boClient.VerificarExistencia(Cpf))
+                return new ValidationResult("CPF já cadastrado");
+            return ValidationResult.Success;
+        }
     }
 }

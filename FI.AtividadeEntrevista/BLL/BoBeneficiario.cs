@@ -1,63 +1,62 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FI.AtividadeEntrevista.BLL
 {
     public class BoBeneficiario
     {
+        /// <summary>
+        /// Inclui um novo beneficiario
+        /// </summary>
+        /// <param name="beneficiario">Objeto de beneficiario</param>
         public long Incluir(DML.Beneficiario beneficiario)
         {
-            DAL.DaoBeneficiario bene = new DAL.DaoBeneficiario();
-            return bene.Incluir(beneficiario);
+            DAL.DaoBneficiarios cli = new DAL.DaoBneficiarios();
+            return cli.Incluir(beneficiario);
         }
 
-        public List<long> Incluir(List<DML.Beneficiario> beneficiarios)
-        {
-            List<long> Ids = new List<long>();
-            foreach (DML.Beneficiario beneficiario in beneficiarios)
-            {
-                Ids.Add(Incluir(beneficiario));
-            }
-            return Ids;
-        }
-
+        /// <summary>
+        /// Altera um beneficiario
+        /// </summary>
+        /// <param name="beneficiario">Objeto de beneficiario</param>
         public void Alterar(DML.Beneficiario beneficiario)
         {
-            DAL.DaoBeneficiario bene = new DAL.DaoBeneficiario();
-            bene.Alterar(beneficiario);
+            DAL.DaoBneficiarios cli = new DAL.DaoBneficiarios();
+            cli.Alterar(beneficiario);
         }
 
-        public void Alterar(List<DML.Beneficiario> beneficiarios)
+        /// <summary>
+        /// Consulta o beneficiario pelo id
+        /// </summary>
+        /// <param name="id">id do beneficiario</param>
+        /// <returns></returns>
+        public DML.Beneficiario Consultar(long id)
         {
-            foreach (var beneficiario in beneficiarios)
-            {
-                Alterar(beneficiario);
-            }
+            DAL.DaoBneficiarios cli = new DAL.DaoBneficiarios();
+            return cli.Consultar(id);
         }
 
+        /// <summary>
+        /// Excluir o beneficiario pelo id
+        /// </summary>
+        /// <param name="id">id do beneficiario</param>
+        /// <returns></returns>
         public void Excluir(long id)
         {
-            DAL.DaoBeneficiario bene = new DAL.DaoBeneficiario();
-            bene.Excluir(id);
+            DAL.DaoBneficiarios cli = new DAL.DaoBneficiarios();
+            cli.Excluir(id);
         }
 
-        public void Excluir(List<long> ids)
+        /// <summary>
+        /// Lista os beneficiario
+        /// </summary>
+        public List<DML.Beneficiario> Listar(long idCliente)
         {
-            foreach (var id in ids)
-            {
-                Excluir(id);
-            }
-        }
-
-        public List<DML.Beneficiario> Listar(long Id)
-        {
-            DAL.DaoBeneficiario bene = new DAL.DaoBeneficiario();
-            return bene.Listar(Id);
-        }
-
-        public bool VerificarExistencia(string CPF, long IdCliente)
-        {
-            DAL.DaoBeneficiario bene = new DAL.DaoBeneficiario();
-            return bene.VerificarExistencia(CPF, IdCliente);
+            DAL.DaoBneficiarios cli = new DAL.DaoBneficiarios();
+            return cli.Listar(idCliente);
         }
     }
 }

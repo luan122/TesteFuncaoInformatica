@@ -18,21 +18,6 @@ namespace FI.AtividadeEntrevista.BLL
             return cli.Incluir(cliente);
         }
 
-        public long Incluir(DML.Cliente cliente, List<DML.Beneficiario> beneficiarios)
-        {
-            DAL.DaoCliente cli = new DAL.DaoCliente();
-            var IdCliente = cli.Incluir(cliente);
-
-            BoBeneficiario bo = new BoBeneficiario();
-            foreach (var item in beneficiarios)
-            {
-                item.IdCliente = IdCliente;
-            }
-            bo.Incluir(beneficiarios);
-
-            return IdCliente;
-        }
-
         /// <summary>
         /// Altera um cliente
         /// </summary>
@@ -41,16 +26,6 @@ namespace FI.AtividadeEntrevista.BLL
         {
             DAL.DaoCliente cli = new DAL.DaoCliente();
             cli.Alterar(cliente);
-        }
-
-        public void Alterar(DML.Cliente cliente, List<DML.Beneficiario> beneficiarios, List<DML.Beneficiario> beneficiariosUpdate, List<long> beneficiariosDelete)
-        {
-            DAL.DaoCliente cli = new DAL.DaoCliente();
-            cli.Alterar(cliente);
-            BoBeneficiario bo = new BoBeneficiario();
-            bo.Incluir(beneficiarios);
-            bo.Alterar(beneficiariosUpdate);
-            bo.Excluir(beneficiariosDelete);
         }
 
         /// <summary>

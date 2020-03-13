@@ -1,11 +1,10 @@
-﻿using FI.AtividadeEntrevista.BLL;
-using FI.AtividadeEntrevista.DML;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using FI.AtividadeEntrevista.BLL;
+using FI.AtividadeEntrevista.DML;
 using WebAtividadeEntrevista.Models;
 
 namespace WebAtividadeEntrevista.Controllers
@@ -13,10 +12,45 @@ namespace WebAtividadeEntrevista.Controllers
     public class BeneficiarioController : Controller
     {
         [HttpPost]
-        public JsonResult Alterar(BeneficiarioModel beneficiario)
+        public JsonResult BeneficiariosList(long id)
         {
-            BoBeneficiario bo = new BoBeneficiario();
-
+            var beneficiarios = new List<BeneficiarioModel>();
+            List<Beneficiario> beneficiariosDML = new BoBeneficiario().Listar(id);
+            foreach (var beneficiario in beneficiariosDML)
+                beneficiarios.Add(new BeneficiarioModel() {
+                    Id = beneficiario.Id,
+                    IdCliente = beneficiario.IdCliente,
+                    Nome = beneficiario.Nome,
+                    Cpf = Convert.ToUInt64(beneficiario.Cpf).ToString(@"000\.000\.000\-00")
+                });
+            return Json(beneficiarios);
+        }
+        [HttpPost]
+        public JsonResult Incluir(BeneficiarioModel beneficiario)
+        {
+            var retorno = new BoBeneficiario().Incluir(new Beneficiario() {
+                Cpf = beneficiario.Cpf,
+                Nome = beneficiario.Nome,
+                IdCliente = beneficiario.IdCliente
+            });
+            return Json(retorno);
+        }
+        [HttpPost]
+        public JsonResult Buscar(long id)
+        {
+            var retorno = new BoBeneficiario().Consultar(id);
+            var beneficiario = new BeneficiarioModel()
+            {
+                Id = retorno.Id,
+                IdCliente = retorno.IdCliente,
+                Nome = retorno.Nome,
+                Cpf = retorno.Cpf
+            };
+            return Json(beneficiario);
+        }
+        [HttpPost]
+        public JsonResult Alterar(BeneficiarioModel model)
+        {
             if (!this.ModelState.IsValid)
             {
                 List<string> erros = (from item in ModelState.Values
@@ -28,88 +62,15 @@ namespace WebAtividadeEntrevista.Controllers
             }
             else
             {
-                if (bo.VerificarExistencia(beneficiario.CPF, beneficiario.IdCliente))
+                new BoBeneficiario().Alterar(new Beneficiario()
                 {
-                    Response.StatusCode = 400;
-                    return Json("CPF já cadastrado para esse beneficiário");
-                }
-
-                bo.Alterar(new Beneficiario()
-                {
-                    Id = beneficiario.Id,
-                    IdCliente = beneficiario.IdCliente,
-                    Nome = beneficiario.Nome,
-                    CPF = beneficiario.CPF
+                    Id = model.Id,
+                    IdCliente = model.IdCliente,
+                    Nome = model.Nome,
+                    Cpf = model.Cpf
                 });
-
-                return Json("Cadastro alterado com sucesso");
+                return Json("Beneficiário alterado com sucesso!");
             }
-        }
-
-        [HttpPost]
-        public JsonResult Excluir(long Id)
-        {
-            if (Id == 0)
-            {
-                List<string> erros = (from item in ModelState.Values
-                                      from error in item.Errors
-                                      select error.ErrorMessage).ToList();
-
-                Response.StatusCode = 400;
-                return Json(string.Join(Environment.NewLine, erros));
-            }
-            else
-            {
-                BoBeneficiario boBeneficiario = new BoBeneficiario();
-                boBeneficiario.Excluir(Id);
-
-                Response.StatusCode = 200;
-                return Json("Cadastro excluído com sucesso");
-            }
-        }
-
-        [HttpPost]
-        public JsonResult Adicionar(BeneficiarioModel beneficiario)
-        {
-            BoBeneficiario bo = new BoBeneficiario();
-            if (bo.VerificarExistencia(beneficiario.CPF, beneficiario.IdCliente))
-            {
-                return Json("CPF já cadastrado para esse beneficiário");
-            }
-            List<Beneficiario> beneficiarios = new List<Beneficiario>();
-            beneficiarios.Add(new Beneficiario()
-            {
-                CPF = beneficiario.CPF,
-                IdCliente = beneficiario.IdCliente,
-                Nome = beneficiario.Nome
-            });
-
-            beneficiario.Id = bo.Incluir(beneficiarios).Last();
-            Response.StatusCode = 200;
-            return Json(JsonConvert.SerializeObject(beneficiario));
-        }
-
-        [HttpGet]
-        public JsonResult Beneficiarios(long Id)
-        {
-            if (Id == 0)
-            {
-                List<string> erros = (from item in ModelState.Values
-                                      from error in item.Errors
-                                      select error.ErrorMessage).ToList();
-
-                Response.StatusCode = 400;
-                return Json(string.Join(Environment.NewLine, erros));
-            }
-            else
-            {
-                BoBeneficiario boBeneficiario = new BoBeneficiario();
-                var beneficiariosJson = JsonConvert.SerializeObject(boBeneficiario.Listar(Id));
-                Response.StatusCode = 200;
-                return Json(beneficiariosJson, JsonRequestBehavior.AllowGet);
-            }
-
-
         }
     }
 }

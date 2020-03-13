@@ -10,7 +10,8 @@ $(document).ready(function () {
         $('#formCadastro #Cidade').val(obj.Cidade);
         $('#formCadastro #Logradouro').val(obj.Logradouro);
         $('#formCadastro #Telefone').val(obj.Telefone);
-        $('#formCadastro #CPF').val(obj.CPF);
+        $('#formCadastro #Cpf').val(obj.Cpf);
+
     }
 
     $('#formCadastro').submit(function (e) {
@@ -29,7 +30,7 @@ $(document).ready(function () {
                 "Cidade": $(this).find("#Cidade").val(),
                 "Logradouro": $(this).find("#Logradouro").val(),
                 "Telefone": $(this).find("#Telefone").val(),
-                "CPF": $(this).find("#CPF").val()
+                "Cpf": $(this).find("#Cpf").val()
             },
             error:
                 function (r) {
@@ -45,9 +46,9 @@ $(document).ready(function () {
                     window.location.href = urlRetorno;
                 }
         });
-    });
-    $('#CPF').mask('000.000.000-00');
-});
+    })
+
+})
 
 function ModalDialog(titulo, texto) {
     var random = Math.random().toString().replace('.', '');

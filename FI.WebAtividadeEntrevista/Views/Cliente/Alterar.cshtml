@@ -7,9 +7,18 @@
         var urlPost = '@Url.Action("Alterar", "Cliente", new { area = "" })';
         var obj = @Html.Raw(Json.Encode(Model));
         var urlRetorno = '@Url.Action("Index", "Cliente", new { area = "" })';
+        var urlValidateCpf = '@Url.Action("ValidarCPf", "Cliente", new {  area = "" })';
+        var urlCheckCpf = '@Url.Action("ChecarCpf", "Cliente", new {  area = "" })';
+        var idCliente = '@Model.Id';
+        var urlPostBeneficiario = '@Url.Action("Incluir","Beneficiario", new { area = ""})';
+        var urlGetBenefiiarios = '@Url.Action("BeneficiariosList", "Beneficiario", new { area = ""})';
+        var urlGetBenefiiario = '@Url.Action("Buscar", "Beneficiario", new { area = ""})';
+        var urlPostAltBeneficiario = '@Url.Action("Alterar", "Beneficiario", new { area = ""})';
     </script>
     @Scripts.Render("~/bundles/altClientes")
-    @Scripts.Render("~/bundles/beneficiarios")
+    @Scripts.Render("~/bundles/validations")
+    @Scripts.Render("~/Scripts/jquery.maskedinput.min.js")
+    @Scripts.Render("~/Scripts/Clientes/FI.CpfValidation.js")
 }
 <h2>@Html.Raw(ViewBag.Title)</h2>
 @Html.Partial("Forms")
